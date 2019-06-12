@@ -1,4 +1,4 @@
-package com.imagosur.dev.proyent.config;
+package com.examen.dev.project.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ public class MyConfigMvc implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/", "empleados");
+        registry.addRedirectViewController("/", "cuentas");
     }
 
 }

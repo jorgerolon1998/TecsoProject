@@ -1,4 +1,4 @@
-package com.imagosur.dev.proyent.dao;
+package com.examen.dev.project.dao;
 
 import java.util.List;
 
@@ -11,9 +11,10 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.imagosur.dev.proyent.entity.Empleado;
-import com.imagosur.dev.proyent.entity.EmpleadoFilter;
+import com.examen.dev.project.entity.Cuenta;
+import com.examen.dev.project.entity.CuentaFilter;
 
+@SuppressWarnings("unused")
 public class DaoEntityManagerImpl<T, K> implements Dao<T, K> {
 
     @PersistenceContext
@@ -51,6 +52,8 @@ public class DaoEntityManagerImpl<T, K> implements Dao<T, K> {
         resultPage.setTotal(total);
         return resultPage;
     }
+    
+    
 
     @Override
     public long count(Filter<T> filter) {
@@ -74,11 +77,15 @@ public class DaoEntityManagerImpl<T, K> implements Dao<T, K> {
     @Override
     @Transactional
     public void delete(K id) {
-        Empleado obj = this.entityManager.find(Empleado.class, id);
-        if (obj == null) {
-            throw new RuntimeException("la entidad de id " + id + " no existia");
-        }
+    	Cuenta obj = this.entityManager.find(Cuenta.class, id);
+    	        
+        if (obj.getMovimientos().size()<=0) {
+        	
         this.entityManager.remove(obj);
+        }
+        else {
+            throw new RuntimeException("La cuenta tiene movimientos");
+        }
     }
 
     @Override

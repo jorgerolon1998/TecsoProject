@@ -1,10 +1,12 @@
-package com.imagosur.dev.proyent.dao;
+package com.examen.dev.project.dao;
 
 public interface Dao<T, K> {
 
     T get(K id);
 
     ResultPage<T> get(Filter<T> filter, PageOptions pageOpts);
+    
+    
 
     long count(Filter<T> filter);
 

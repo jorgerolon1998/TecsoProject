@@ -1,8 +1,8 @@
-INSERT INTO Empleado(nombre_apellido,edad,tipo_documento,documento) VALUES('Enrique Rivaldo',25,'DNI','37542658');
-INSERT INTO Empleado(nombre_apellido,edad,tipo_documento,documento) VALUES('Ricardo Casanova',30,'DNI','35624587');
-INSERT INTO Empleado(nombre_apellido,edad,tipo_documento,documento) VALUES('Ruben Araoz',20,'DNI','42365985');
-INSERT INTO Empleado(nombre_apellido,edad,tipo_documento,documento) VALUES('Christian Romero',35,'DNI','32653985');
-INSERT INTO Empleado(nombre_apellido,edad,tipo_documento,documento) VALUES('Enrique Pinti',55,'DNI','25689562');
-INSERT INTO Empleado(nombre_apellido,edad,tipo_documento,documento) VALUES('Sergio Marquina',40,'DNI','29365985');
-INSERT INTO Empleado(nombre_apellido,edad,tipo_documento,documento) VALUES('Cristiano Ronaldo',35,'DNI','32475986');
-INSERT INTO Empleado(nombre_apellido,edad,tipo_documento,documento) VALUES('Sandra Guzmán',45,'DNI','27956895');
+INSERT INTO CUENTA(razon_social,tipo_documento,documento,saldo,moneda) VALUES('SYSTEM SRL','CUIT','30710969619',12345.12,'peso');
+INSERT INTO CUENTA(razon_social,tipo_documento,documento,saldo,moneda) VALUES('PAPER SA','CUIT','30710123388',12345.15,'dolar');
+INSERT INTO CUENTA(razon_social,tipo_documento,documento,saldo,moneda) VALUES('STORE SA','CUIT','30708442034',12300.12,'euro');
+INSERT INTO CUENTA(razon_social,tipo_documento,documento,saldo,moneda) VALUES('PENGUIN SA','CUIT','30714583960',123.36,'peso');
+INSERT INTO CUENTA(razon_social,tipo_documento,documento,saldo,moneda) VALUES('EDITORIAL SA','CUIT','30715645579',1456.99,'dolar');
+INSERT INTO CUENTA(razon_social,tipo_documento,documento,saldo,moneda) VALUES('MAQUINARIAS SRL','CUIT','30711206759',1569.66,'dolar');
+INSERT INTO CUENTA(razon_social,tipo_documento,documento,saldo,moneda) VALUES('ELEC SA','CUIT','33714520259',12369.36,'euro');
+INSERT INTO CUENTA(razon_social,tipo_documento,documento,saldo,moneda) VALUES('AGUA Y LUZ SA','CUIT','30712471642',323.60,'peso');

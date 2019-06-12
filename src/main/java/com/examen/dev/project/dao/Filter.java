@@ -1,4 +1,4 @@
-package com.imagosur.dev.proyent.dao;
+package com.examen.dev.project.dao;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

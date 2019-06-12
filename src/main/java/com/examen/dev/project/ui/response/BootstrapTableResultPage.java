@@ -1,8 +1,8 @@
-package com.imagosur.dev.proyent.ui.response;
+package com.examen.dev.project.ui.response;
 
 import java.util.List;
 
-import com.imagosur.dev.proyent.dao.ResultPage;
+import com.examen.dev.project.dao.ResultPage;
 
 public class BootstrapTableResultPage<T> {
     private List<T> rows;

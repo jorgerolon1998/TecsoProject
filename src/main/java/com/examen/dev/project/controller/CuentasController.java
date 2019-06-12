@@ -1,4 +1,4 @@
-package com.imagosur.dev.proyent.controller;
+package com.examen.dev.project.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,60 +16,64 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.imagosur.dev.proyent.dao.PageOptions;
-import com.imagosur.dev.proyent.dao.ResultPage;
-import com.imagosur.dev.proyent.entity.Empleado;
-import com.imagosur.dev.proyent.entity.EmpleadoFilter;
-import com.imagosur.dev.proyent.service.EmpleadoService;
-import com.imagosur.dev.proyent.ui.response.BootstrapTableResultPage;
+import com.examen.dev.project.dao.PageOptions;
+import com.examen.dev.project.dao.ResultPage;
+import com.examen.dev.project.entity.Cuenta;
+import com.examen.dev.project.entity.CuentaFilter;
+import com.examen.dev.project.entity.Movimiento;
+import com.examen.dev.project.entity.MovimientoFilter;
+import com.examen.dev.project.service.CuentaService;
+import com.examen.dev.project.ui.response.BootstrapTableResultPage;
 
+@SuppressWarnings("unused")
 @Controller
-public class EmpleadosController {
+public class CuentasController {
 
-    private static final Logger logger = LoggerFactory.getLogger(EmpleadosController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CuentasController.class);
 
     @Autowired
-    private EmpleadoService empleadoService;
+    private CuentaService cuentaService;
 
-    @GetMapping("/empleados")
+    @GetMapping("/cuentas")
     public ModelAndView getView() {
-        return new ModelAndView("empleados");
+        return new ModelAndView("cuentas");
     }
 
-    @GetMapping("/api/empleados")
-    public ResponseEntity<BootstrapTableResultPage<Empleado>> getEmpleados(
+    @GetMapping("/api/cuentas")
+    public ResponseEntity<BootstrapTableResultPage<Cuenta>> getCuentas(
             @ModelAttribute(binding = false) PageOptions pageOptions,
-            @ModelAttribute(binding = false) EmpleadoFilter filter) {
-        ResultPage<Empleado> resultPage = empleadoService.getEmpleados(filter, pageOptions);
-        BootstrapTableResultPage<Empleado> uiResult = BootstrapTableResultPage.fromResultPage(resultPage);
+            @ModelAttribute(binding = false) CuentaFilter filter) {
+        ResultPage<Cuenta> resultPage = cuentaService.getCuenta(filter, pageOptions);
+        BootstrapTableResultPage<Cuenta> uiResult = BootstrapTableResultPage.fromResultPage(resultPage);
         return ResponseEntity.ok(uiResult);
     }
+    
 
-    @DeleteMapping("/api/empleados/{id:\\d+}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") Long idEmpleado) {
+    @DeleteMapping("/api/cuentas/{id:\\d+}")
+    public ResponseEntity<?> delete(@PathVariable(name = "id") Long idCuenta) {
         logger.debug("delete");
-        empleadoService.delete(idEmpleado);
+        cuentaService.delete(idCuenta);
         return ResponseEntity.noContent().build();
 
     }
 
-    @PostMapping("/api/empleados")
-    public ResponseEntity<?> post(@RequestBody Empleado empleado) {
+    @PostMapping("/api/cuentas")
+    public ResponseEntity<?> post(@RequestBody Cuenta cuenta) {
         logger.debug("post");
-        empleadoService.insert(empleado);
+        cuentaService.insert(cuenta);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/api/empleados/{id:\\d+}")
-    public ResponseEntity<?> put(@RequestBody Empleado empleado) {
+    @PutMapping("/api/cuentas/{id:\\d+}")
+    public ResponseEntity<?> put(@RequestBody Cuenta cuenta) {
         logger.debug("put");
-        empleadoService.update(empleado);
+        cuentaService.update(cuenta);
         return ResponseEntity.noContent().build();
     }
 
     @ModelAttribute
-    public EmpleadoFilter getFilter() {
-        EmpleadoFilter filter = new EmpleadoFilter();
+    public CuentaFilter getFilter() {
+    	CuentaFilter filter = new CuentaFilter();
         return filter;
     }
 

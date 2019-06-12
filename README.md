@@ -1,6 +1,6 @@
 # Proyecto Entrevista
 
-El proyecto consiste en una pequeña aplicación de tipo ABM sin terminar acerca de Empleados de una organización.
+El proyecto consiste en una pequeña aplicación de tipo ABM sin terminar acerca de Cuentas de una organización.
 
 ## Set-Up
 

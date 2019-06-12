@@ -1,4 +1,4 @@
-package com.imagosur.dev.proyent.dao;
+package com.examen.dev.project.dao;
 
 import java.util.List;
 

@@ -1,0 +1,360 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<title>Sistema de Gestion Administrativo Contable</title>
+	<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen" />
+	<link th:href="@{/webjars/bootstrap-table/1.12.1/dist/bootstrap-table.min.css}" rel="stylesheet" media="screen" />
+	<link th:href="@{/css/global.css}" rel="stylesheet" media="screen" />
+</head>
+<body>
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Cuentas Corrientes</h3>
+			</div>
+						<div class="panel-body">
+				<table id="cuentas-table"></table>
+				<div class="cuentas-table-toolbar">
+					<div class="form-inline" role="form">
+						<button id="agregar-nuevo" type="button" class="btn btn-primary">Agregar Cuenta</button>
+					</div>
+				</div>
+				<div id="edicion" style="display:none">
+					<div class="separacion-15"></div>
+					<form class="form-horizontal">
+						<input type="hidden" id="id"/>
+						<div class="form-group">
+							<label for="legajo" class="col-md-2 control-label">Legajo</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control" id="legajo" disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="razonSocial" class="col-md-2 control-label">Razón Social</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="razonSocial" placeholder="Razón Social" >
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="tipoDocumento" class="col-md-2 control-label">Tipo Documento</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="tipoDocumento" placeholder="Tipo Documento">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="nroDocumento" class="col-md-2 control-label">Nro Documento</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="nroDocumento" placeholder="Nro Documento">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="moneda" class="col-md-2 control-label">Moneda</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="moneda" placeholder="Moneda">
+							</div>
+						</div>
+						
+						<div id ="descripcion" class="form-group">
+							<label for="descripcion" class="col-md-2 control-label">Descripcion</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="descripcion" placeholder="Descripcion">
+							</div>
+						</div>						
+						
+						<div id ="monto" class="form-group">
+							<label for="movimientos.monto" class="col-md-2 control-label">Monto</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="monto" placeholder="Monto">
+							</div>
+						</div>
+						
+						<div id ="tipo" class="form-group">
+							<label for="movimientos.tipo" class="col-md-2 control-label">Tipo</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="tipo" placeholder="Tipo">
+							</div>
+						</div>
+						
+						<div id ="fecha" class="form-group">
+							<label for="movimientos.fecha" class="col-md-2 control-label">Fecha</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" id="fecha" placeholder="Fecha">
+							</div>
+						</div>																																										
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-4">
+								<button type="button" id="cancelar" class="btn btn-default" style="display:none">Cancelar</button>
+								<button type="button" id="guardar" class="btn btn-primary" style="display:none">Guardar</button>
+								<button type="button" id="movimientos" class="btn btn-primary" style="display:none">Agregar Movimiento</button>
+								<button type="button" id="eliminar" class="btn btn-danger" style="display:none">Eliminar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+			<div class="panel-body">
+				<table id="movimientos-table"></table>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}" type="text/javascript"></script>
+<script type="text/javascript" th:inline="javascript">
+
+$(function(){
+	bootbox.setLocale("es");
+	$("table#cuentas-table").bootstrapTable({
+		url: [[@{/api/cuentas}]],
+		pagination : true,
+		sidePagination: 'server',
+		pageSize: 5,
+		pageList: [5,10,20],
+		showRefresh: true,
+		clickToSelect: true,
+		singleSelect: true,
+		columns: [
+			{
+				title: "#",
+				checkbox: true,
+			},
+			{
+				field: "id",
+				title: "ID",
+				visible: false
+			},
+			{
+				field: "legajo",
+				title: "Legajo"
+			},
+			{
+				field: "razonSocial",
+				title: "Razón Social"
+			},
+			{
+				field: "tipoDocumento",
+				title: "Tipo Documento"
+			},
+			{
+				field: "nroDocumento",
+				title: "Nro Documento"
+			},
+			{
+				field: "moneda",
+				title: "Moneda"
+			},
+			{
+				field: "saldo",
+				title: "Saldo"
+			}
+		],
+		buttonsAlign: 'right',
+		toolbarAlign: 'right',
+		toolbar: "div#cuentas-table-toolbar",
+		onCheck: function(cuentas){
+			abrirEdicion(cuentas);
+		},
+		onUncheck: function(){
+			cerrarEdicion();
+		}
+	});
+	
+	$("button#agregar-nuevo").click(abrirCreacion);
+	$("button#cancelar").click(cerrarEdicion);
+	$("button#guardar").click(guardarCuenta);
+	$("button#movimientos").click(guardarCuenta);
+	$("button#eliminar").click(eliminarCuenta);
+
+	function abrirCreacion(){
+		$("button#agregar-nuevo").prop("disabled",true);
+		$("button#cancelar").show();
+		$("button#guardar").show();
+		$("button#eliminar").hide();
+		$("button#movimientos").hide();
+		$("div#edicion").show();
+		$("input#id").val(null);
+		$("input#legajo").val(null).prop("disabled",true);
+		$("div#fecha").hide();
+		$("div#tipo").hide();
+		$("div#descripcion").hide();
+		$("div#monto").hide();
+		$("input#razonSocial").val(null).prop("disabled",false);
+		$("input#tipoDocumento").val(null).prop("disabled",false);
+		$("input#nroDocumento").val(null).prop("disabled",false);
+		$("input#moneda").val(null).prop("disabled",false);
+	}
+	
+	function abrirEdicion(cuentas){
+		$("button#agregar-nuevo").prop("disabled",true);
+		$("button#cancelar").show();
+		$("button#guardar").hide();
+		$("button#movimientos").show();
+		$("button#eliminar").show();
+		$("div#edicion").show();
+		$("input#id").val(cuentas.id);
+		$("input#legajo").val(cuentas.legajo).prop("disabled",true);
+		$("input#razonSocial").val(cuentas.razonSocial).prop("disabled",true);
+		$("input#tipoDocumento").val(cuentas.tipoDocumento).prop("disabled",true);
+		$("input#nroDocumento").val(cuentas.nroDocumento).prop("disabled",true);
+		$("input#moneda").val(cuentas.moneda).prop("disabled",true);
+		$("input#fecha").val(null).prop("disabled",false);
+		$("input#tipo").val(null).prop("disabled",false);
+		$("input#descripcion").val(null).prop("disabled",false);
+		$("input#monto").val(null).prop("disabled",false);
+		$("div#fecha").hide();
+		$("div#tipo").show();
+		$("div#descripcion").show();
+		$("div#monto").show();
+
+
+	}
+	
+	function cerrarEdicion(){
+		$("div#edicion").hide();
+		$("input#legajo").val(null);
+		$("input#razonSocial").val(null);
+		$("input#tipoDocumento").val(null);
+		$("input#nroDocumento").val(null);
+
+		$("button#agregar-nuevo").prop("disabled",false);
+	}
+	
+	function eliminarCuenta(){
+		var id = $("input#id").val();
+		bootbox.confirm({
+			message: "¿Está seguro que desea eliminar al cuentas?",
+			size: "small",
+			callback: function(confirmed){
+				$.ajax({
+					url: [[@{/api/cuentas/}]] + id,
+					method: "DELETE",
+					contentType: "application/json; charset=utf-8",
+					dataType: 'json',
+					data: JSON.stringify(id)
+				}).done(function(){
+					cerrarEdicion();
+					refreshTable();
+				}).fail(handleFailure);		
+			}
+		});
+	}
+	
+	function guardarCuenta(){
+		var cuentas = getDatosCuenta();
+		var existente = cuentas.id
+		if ( existente ){
+			actualizarCuentaExistente(cuentas);
+		} else {
+			darDeAltaCuenta(cuentas);
+		}
+	}
+	
+	function darDeAltaCuenta(cuentas){
+		$.ajax({
+			url: [[@{/api/cuentas/}]],
+			method: "POST",
+			dataType: 'json',
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(cuentas)
+		}).done(function(){
+			cerrarEdicion();
+			refreshTable();
+		}).fail(handleFailure);
+	}
+	
+	function actualizarCuentaExistente(cuentas){
+		$.ajax({
+			url: [[@{/api/cuentas/}]] + cuentas.id,
+			method: "PUT",
+			contentType: "application/json; charset=utf-8",
+			dataType: 'json',
+			data: JSON.stringify(cuentas)
+		}).done(function(){
+			cerrarEdicion();
+			refreshTable();
+		}).fail(handleFailure);
+	}
+	
+	function handleFailure(e){
+		var msg = "La cuenta tiene Movimientos y no puede ser eliminada";
+		switch ( e.status ){
+			case 501:
+				msg = "Método sin implementar";
+			break;
+		}
+		bootbox.alert(msg);
+	}
+	
+	function refreshTable(){
+		$("table#cuentas-table").bootstrapTable("refresh");
+	}
+	
+	
+	function getDatosMovimiento(){
+		movimientos: $("input#tipo").val(),
+		movimientos: $("input#fecha").val(),
+		movimientos: $("input#monto").val(),
+		id: $("input#id").val(),
+		legajo: $("input#legajo").val(),
+		razonSocial: $("input#razonSocial").val(),
+		tipoDocumento: $("input#tipoDocumento").val(),
+		nroDocumento: $("input#nroDocumento").val(),
+	}
+	
+	function getDatosCuenta(){
+		return {
+			
+			id: $("input#id").val(),
+			legajo: $("input#legajo").val(),
+			razonSocial: $("input#razonSocial").val(),
+			tipoDocumento: $("input#tipoDocumento").val(),
+			nroDocumento: $("input#nroDocumento").val(),
+
+
+
+		}
+	}
+	
+	$("table#movimientos-table").bootstrapTable({
+		url: [[@{/api/cuentas}]],
+		pagination : true,
+		sidePagination: 'server',
+		pageSize: 5,
+		pageList: [5,10,20],
+		showRefresh: true,
+		clickToSelect: true,
+		singleSelect: true,
+		columns: [
+			{
+				field: "movimientos.descripcion",
+				title: "Descripcion"
+			},
+			{
+				field: "movimientos.monto",
+				title: "Monto"
+			},
+			{
+				field: "movimientos.tipo",
+				title: "Tipo"
+			},	
+			{
+				field: "movimientos.fecha",
+				title: "Fecha"
+			}
+		],
+		buttonsAlign: 'right',
+		toolbarAlign: 'right',
+		toolbar: "div#cuentas-table-toolbar",
+	});
+});
+
+</script>
+<script th:src="@{/webjars/bootstrap-table/1.12.1/dist/bootstrap-table.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/webjars/bootbox/4.4.0/bootbox.js}" type="text/javascript"></script>
+</body>
+</html>
