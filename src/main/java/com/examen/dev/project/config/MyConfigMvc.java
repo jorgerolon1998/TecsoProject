@@ -32,6 +32,7 @@ public class MyConfigMvc implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/", "cuentas");
+
     }
 
 }

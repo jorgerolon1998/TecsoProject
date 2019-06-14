@@ -1,5 +1,8 @@
 package com.examen.dev.project.dao;
 
+import com.examen.dev.project.entity.Movimiento;
+import com.examen.dev.project.entity.MovimientoFilter;
+
 public interface Dao<T, K> {
 
     T get(K id);
@@ -15,6 +18,8 @@ public interface Dao<T, K> {
     void update(K id, T obj);
 
     void delete(K id);
+
+	ResultPage<Movimiento> get(MovimientoFilter filter, PageOptions pageOptions, long idcuenta);
 
 
 }

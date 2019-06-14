@@ -26,9 +26,9 @@
 					<form class="form-horizontal">
 						<input type="hidden" id="id"/>
 						<div class="form-group">
-							<label for="legajo" class="col-md-2 control-label">Legajo</label>
+							<label for="id" class="col-md-2 control-label">Nro Cuenta</label>
 							<div class="col-md-2">
-								<input type="text" class="form-control" id="legajo" disabled>
+								<input type="text" class="form-control" id="id" disabled>
 							</div>
 						</div>
 						<div class="form-group">
@@ -37,58 +37,24 @@
 								<input type="text" class="form-control" id="razonSocial" placeholder="Razón Social" >
 							</div>
 						</div>
-
-						<div class="form-group">
-							<label for="tipoDocumento" class="col-md-2 control-label">Tipo Documento</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="tipoDocumento" placeholder="Tipo Documento">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="nroDocumento" class="col-md-2 control-label">Nro Documento</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="nroDocumento" placeholder="Nro Documento">
-							</div>
-						</div>
+						
 						<div class="form-group">
 							<label for="moneda" class="col-md-2 control-label">Moneda</label>
 							<div class="col-md-4">
 								<input type="text" class="form-control" id="moneda" placeholder="Moneda">
 							</div>
 						</div>
-						
-						<div id ="descripcion" class="form-group">
-							<label for="descripcion" class="col-md-2 control-label">Descripcion</label>
+						<div class="form-group">
+							<label for="saldo" class="col-md-2 control-label">Saldo</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" id="descripcion" placeholder="Descripcion">
+								<input type="text" class="form-control" id="saldo" placeholder="Saldo">
 							</div>
-						</div>						
-						
-						<div id ="monto" class="form-group">
-							<label for="movimientos.monto" class="col-md-2 control-label">Monto</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="monto" placeholder="Monto">
-							</div>
-						</div>
-						
-						<div id ="tipo" class="form-group">
-							<label for="movimientos.tipo" class="col-md-2 control-label">Tipo</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="tipo" placeholder="Tipo">
-							</div>
-						</div>
-						
-						<div id ="fecha" class="form-group">
-							<label for="movimientos.fecha" class="col-md-2 control-label">Fecha</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="fecha" placeholder="Fecha">
-							</div>
-						</div>																																										
+						</div>																																									
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-4">
 								<button type="button" id="cancelar" class="btn btn-default" style="display:none">Cancelar</button>
 								<button type="button" id="guardar" class="btn btn-primary" style="display:none">Guardar</button>
-								<button type="button" id="movimientos" class="btn btn-primary" style="display:none">Agregar Movimiento</button>
+								<button type="button" id="movimientos" class="btn btn-primary" style="display:none">Ver Movimiento</button>
 								<button type="button" id="eliminar" class="btn btn-danger" style="display:none">Eliminar</button>
 							</div>
 						</div>
@@ -96,9 +62,6 @@
 				</div>
 			</div>
 			
-			<div class="panel-body">
-				<table id="movimientos-table"></table>
-			</div>
 			
 		</div>
 	</div>
@@ -128,20 +91,12 @@ $(function(){
 				visible: false
 			},
 			{
-				field: "legajo",
-				title: "Legajo"
+				field: "id",
+				title: "Nro Cuenta"
 			},
 			{
 				field: "razonSocial",
 				title: "Razón Social"
-			},
-			{
-				field: "tipoDocumento",
-				title: "Tipo Documento"
-			},
-			{
-				field: "nroDocumento",
-				title: "Nro Documento"
 			},
 			{
 				field: "moneda",
@@ -166,7 +121,7 @@ $(function(){
 	$("button#agregar-nuevo").click(abrirCreacion);
 	$("button#cancelar").click(cerrarEdicion);
 	$("button#guardar").click(guardarCuenta);
-	$("button#movimientos").click(guardarCuenta);
+	$("button#movimientos").click(verMovimientos);
 	$("button#eliminar").click(eliminarCuenta);
 
 	function abrirCreacion(){
@@ -177,15 +132,11 @@ $(function(){
 		$("button#movimientos").hide();
 		$("div#edicion").show();
 		$("input#id").val(null);
-		$("input#legajo").val(null).prop("disabled",true);
-		$("div#fecha").hide();
-		$("div#tipo").hide();
-		$("div#descripcion").hide();
-		$("div#monto").hide();
+		$("input#id").val(null).prop("disabled",true);
 		$("input#razonSocial").val(null).prop("disabled",false);
-		$("input#tipoDocumento").val(null).prop("disabled",false);
-		$("input#nroDocumento").val(null).prop("disabled",false);
 		$("input#moneda").val(null).prop("disabled",false);
+		$("input#saldo").val(null).prop("disabled",false);
+
 	}
 	
 	function abrirEdicion(cuentas){
@@ -196,34 +147,27 @@ $(function(){
 		$("button#eliminar").show();
 		$("div#edicion").show();
 		$("input#id").val(cuentas.id);
-		$("input#legajo").val(cuentas.legajo).prop("disabled",true);
+		$("input#id").val(cuentas.id).prop("disabled",true);
 		$("input#razonSocial").val(cuentas.razonSocial).prop("disabled",true);
-		$("input#tipoDocumento").val(cuentas.tipoDocumento).prop("disabled",true);
-		$("input#nroDocumento").val(cuentas.nroDocumento).prop("disabled",true);
 		$("input#moneda").val(cuentas.moneda).prop("disabled",true);
-		$("input#fecha").val(null).prop("disabled",false);
-		$("input#tipo").val(null).prop("disabled",false);
-		$("input#descripcion").val(null).prop("disabled",false);
-		$("input#monto").val(null).prop("disabled",false);
-		$("div#fecha").hide();
-		$("div#tipo").show();
-		$("div#descripcion").show();
-		$("div#monto").show();
+		$("input#saldo").val(cuentas.saldo).prop("disabled",true);
+
 
 
 	}
 	
 	function cerrarEdicion(){
 		$("div#edicion").hide();
-		$("input#legajo").val(null);
+		$("input#id").val(null);
 		$("input#razonSocial").val(null);
-		$("input#tipoDocumento").val(null);
-		$("input#nroDocumento").val(null);
+		$("input#moneda").val(null);
+		$("input#saldo").val(null);
 
 		$("button#agregar-nuevo").prop("disabled",false);
 	}
 	
 	function eliminarCuenta(){
+		
 		var id = $("input#id").val();
 		bootbox.confirm({
 			message: "¿Está seguro que desea eliminar al cuentas?",
@@ -254,16 +198,26 @@ $(function(){
 	}
 	
 	function darDeAltaCuenta(cuentas){
-		$.ajax({
-			url: [[@{/api/cuentas/}]],
-			method: "POST",
-			dataType: 'json',
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify(cuentas)
-		}).done(function(){
-			cerrarEdicion();
-			refreshTable();
-		}).fail(handleFailure);
+		if (cuentas.moneda == "PESO" || cuentas.moneda == "DOLAR" || cuentas.moneda == "EURO" )
+		{
+
+			$.ajax({
+				url: [[@{/api/cuentas/}]],
+				method: "POST",
+				dataType: 'json',
+				contentType: "application/json; charset=utf-8",
+				data: JSON.stringify(cuentas)
+			}).done(function(){
+				cerrarEdicion();
+				refreshTable();
+			}).fail(handleFailure);
+	
+		}
+		else {
+			bootbox.alert("El Tipo de Moneda solo puede ser PESO,EURO o DOLAR");
+
+		}	
+	
 	}
 	
 	function actualizarCuentaExistente(cuentas){
@@ -293,63 +247,25 @@ $(function(){
 		$("table#cuentas-table").bootstrapTable("refresh");
 	}
 	
-	
-	function getDatosMovimiento(){
-		movimientos: $("input#tipo").val(),
-		movimientos: $("input#fecha").val(),
-		movimientos: $("input#monto").val(),
-		id: $("input#id").val(),
-		legajo: $("input#legajo").val(),
-		razonSocial: $("input#razonSocial").val(),
-		tipoDocumento: $("input#tipoDocumento").val(),
-		nroDocumento: $("input#nroDocumento").val(),
-	}
-	
 	function getDatosCuenta(){
 		return {
 			
 			id: $("input#id").val(),
-			legajo: $("input#legajo").val(),
 			razonSocial: $("input#razonSocial").val(),
-			tipoDocumento: $("input#tipoDocumento").val(),
-			nroDocumento: $("input#nroDocumento").val(),
+			moneda: $("input#moneda").val(),
+			saldo: $("input#saldo").val()
 
 
 
 		}
 	}
 	
-	$("table#movimientos-table").bootstrapTable({
-		url: [[@{/api/cuentas}]],
-		pagination : true,
-		sidePagination: 'server',
-		pageSize: 5,
-		pageList: [5,10,20],
-		showRefresh: true,
-		clickToSelect: true,
-		singleSelect: true,
-		columns: [
-			{
-				field: "movimientos.descripcion",
-				title: "Descripcion"
-			},
-			{
-				field: "movimientos.monto",
-				title: "Monto"
-			},
-			{
-				field: "movimientos.tipo",
-				title: "Tipo"
-			},	
-			{
-				field: "movimientos.fecha",
-				title: "Fecha"
-			}
-		],
-		buttonsAlign: 'right',
-		toolbarAlign: 'right',
-		toolbar: "div#cuentas-table-toolbar",
-	});
+	function verMovimientos(){
+		var cuentas = getDatosCuenta();
+		
+		window.location.href ="http://localhost:8080/movimientos/" + cuentas.id;
+
+	}
 });
 
 </script>

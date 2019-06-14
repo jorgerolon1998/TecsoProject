@@ -18,17 +18,9 @@ public class Cuenta {
     @Column(name = "id_cuenta")
     private Long id;
 
-    @Column(name = "legajo")
-    private Long legajo;
-
     @Column(name = "razon_social")
     private String razonSocial;
     
-    @Column(name = "tipo_documento")
-    private String tipoDocumento;
-    
-    @Column(name = "documento")
-    private String nroDocumento;
     
     @Column(name = "saldo")
     private Double saldo;
@@ -37,9 +29,6 @@ public class Cuenta {
     private String moneda;
     
     
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_mov")
-    private List<Movimiento> movimientos;
     
     
     public Long getId() {
@@ -50,14 +39,6 @@ public class Cuenta {
         this.id = id;
     }
 
-    public Long getLegajo() {
-        return legajo;
-    }
-
-    public void setLegajo(Long legajo) {
-        this.legajo = legajo;
-    }
-
     public String getRazonSocial() {
         return razonSocial;
     }
@@ -66,22 +47,6 @@ public class Cuenta {
         this.razonSocial = razonSocial;
     }
 
-
-	public String getTipoDocumento() {
-		return tipoDocumento;
-	}
-
-	public void setTipoDocumento(String tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
-	}
-
-	public String getNroDocumento() {
-		return nroDocumento;
-	}
-
-	public void setNroDocumento(String nroDocumento) {
-		this.nroDocumento = nroDocumento;
-	}
 
 	public Double getSaldo() {
 		return saldo;
@@ -99,11 +64,4 @@ public class Cuenta {
 		this.moneda = moneda;
 	}
 
-	public List<Movimiento> getMovimientos() {
-		return movimientos;
-	}
-
-	public void setMovimientos(List<Movimiento> movimientos) {
-		this.movimientos = movimientos;
-	}
 }

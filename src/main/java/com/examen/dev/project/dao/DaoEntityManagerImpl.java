@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.examen.dev.project.entity.Cuenta;
 import com.examen.dev.project.entity.CuentaFilter;
+import com.examen.dev.project.entity.Movimiento;
+import com.examen.dev.project.entity.MovimientoFilter;
 
 @SuppressWarnings("unused")
 public class DaoEntityManagerImpl<T, K> implements Dao<T, K> {
@@ -78,14 +80,18 @@ public class DaoEntityManagerImpl<T, K> implements Dao<T, K> {
     @Transactional
     public void delete(K id) {
     	Cuenta obj = this.entityManager.find(Cuenta.class, id);
-    	        
-        if (obj.getMovimientos().size()<=0) {
-        	
-        this.entityManager.remove(obj);
-        }
-        else {
+    	
+    	String sql = "Select * from Movimiento mov where mov.idCuenta = " +id;
+    	
+    	List movimientos = entityManager.createQuery(sql).getResultList();
+        
+    	if (movimientos != null || movimientos.size()>=1) {
             throw new RuntimeException("La cuenta tiene movimientos");
-        }
+
+    	}
+    	else {
+        this.entityManager.remove(obj);
+    	}
     }
 
     @Override
@@ -102,5 +108,21 @@ public class DaoEntityManagerImpl<T, K> implements Dao<T, K> {
         this.get(id);
         this.entityManager.merge(obj);
     }
+
+	@Override
+	public ResultPage<Movimiento> get(MovimientoFilter filter, PageOptions pageOptions, long idcuenta) {
+    	
+		String sql = "SELECT * FROM MOVIMIENTO  where id_cuenta = " +idcuenta;
+    	
+    	List  results = entityManager.createNativeQuery(sql).getResultList();
+		
+	
+	        long total = pageOptions != null ? this.count((Filter<T>) filter) : results.size();
+	        ResultPage<T> resultPage = new ResultPage<T>();
+	        resultPage.setItems((List<T>) results);
+	        resultPage.setPage(pageOptions);
+	        resultPage.setTotal(total);
+	        return (ResultPage<Movimiento>) resultPage;
+	}
 
 }

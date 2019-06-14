@@ -1,0 +1,16 @@
+********************Respuestas*********************
+
+
+Se armó una aplicación con SpringBoot, h2 , bootstrap y java
+
+
+Se puede entrar a la consola de h2  desde : http://localhost:8080/h2_console/
+
+Revisar que el puerto 8080 no se encuentre ocupado
+
+En esta version solamente se encuentra agregado el CRUD sin modificacion de las cuentas, falta implementar
+la funcionalidad de movimientos
+
+Se puede ingresar a la aplicacion desde http://localhost:8080
+
+*************************************************************

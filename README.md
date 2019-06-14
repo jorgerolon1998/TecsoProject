@@ -24,36 +24,8 @@ mvn spring-boot::run
 
 Luego dirigirse al sitio http://localhost:8080 para verificar que la aplicación se encuentra funcionando.
 
-*IMPORTANTE* 
-Los cambios se deben subir a un repositorio remoto creados por el evaluado, manteniendo la historia de versionado original previa del repositorio remoto de origen.
 
-```
-$ git remote add mi-propio-repo <url-a-repo-propio>
-```
-
-## Objetivo del ejercicio
-
-Se desea poner a prueba los conocimientos backend y frontend del desarrollador para poder implementar los siguientes requerimientos:
-
-* Corregir problema de paginación. Se encuentran precargados más usuarios de los que se muestran en la primer página. Al pasar a la siguiente,  se siguen visualizando los mismos
-* Agregar eliminación de usuarios
-* Agregar visualización y edición de campos edad, tipo de documento y n° de documento
-* (OPCIONAL) Escribir sobre el archivo ./NotasEvaluado.txt alguna propuesta de mejora sobre la evaluación.
-
-Una vez satisfechos los requerimientos,  realizar lo siguiente:
-
-    1) subir los cambios al repositorio privado propio
-    2) dar permisos de visualización al evaluador y avisarle que los cambios estan listos
-    3) esperar una respuesta del evaluador
-
-
-## Notas
-
-* Se puede consultar al evaluador sobre cualquier aspecto del ejercicio en cualquier momento ( Incluso sobre los framework utilizados )
-* Se pueden escribir sobre el archivo .*NotasEvaluado.txt en caso de querer aclarar algo de la resolución
-
-
-## Documentación de frameworks
+frameworks
 
 * [Maven](https://maven.apache.org/) - Gestor de dependencias y de ciclo de vida de proyecto
 * [Spring 5](https://spring.io/) - DI container
