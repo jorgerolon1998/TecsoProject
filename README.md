@@ -24,6 +24,10 @@ mvn spring-boot::run
 
 Luego dirigirse al sitio http://localhost:8080 para verificar que la aplicación se encuentra funcionando.
 
+Se encuentra la consola de h2 activa si se quiere entrar la url es: http://localhost:8080/h2_console
+
+Nota: Revisar dicho puerto (8080).
+
 
 frameworks
 
