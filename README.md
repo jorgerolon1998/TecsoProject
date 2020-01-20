@@ -1,4 +1,4 @@
-# Proyecto Entrevista
+# Examen
 
 El proyecto consiste en una pequeña aplicación de tipo ABM sin terminar acerca de Cuentas de una organización.
 
