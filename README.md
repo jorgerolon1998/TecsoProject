@@ -1,10 +1,10 @@
 # Examen
 
-El proyecto consiste en una pequeña aplicación de tipo ABM sin terminar acerca de Cuentas de una organización.
+El proyecto consiste en una pequeña aplicación de tipo ABM sin terminar acerca de Sucursales de una organización.
 
 ## Set-Up
 
-Se requiere tener instalado una jdk de Java 8 y tenerla referenciada en la variable de sistema %JAVA_HOME% para que maven pueda usarla.
+Se requiere tener instalado Maven, una jdk de Java 8 y tenerla referenciada en la variable de sistema %JAVA_HOME% para que maven pueda usarla.
 Se debe ejecutar lo siguiente por cmd,  en el directorio donde se encuentre el proyecto descargado.
 
 ```
@@ -24,9 +24,23 @@ mvn spring-boot::run
 
 Luego dirigirse al sitio http://localhost:8080 para verificar que la aplicación se encuentra funcionando.
 
-Se encuentra la consola de h2 activa si se quiere entrar la url es: http://localhost:8080/h2_console
 
 Nota: Revisar dicho puerto (8080).
+
+Los servicios publicados son:
+
+http://localhost:8080/api/sucursales
+
+http://localhost:8080/api/findSucursales
+
+Delete
+http://localhost:8080/api/sucursales/{id}
+
+Post (Add  con un objeto de sucursal)
+http://localhost:8080/api/sucursales{Sucursal}
+
+PUT (update de objeto sucursal )
+http://localhost:8080//api/sucursales/{Sucursal}
 
 
 frameworks
