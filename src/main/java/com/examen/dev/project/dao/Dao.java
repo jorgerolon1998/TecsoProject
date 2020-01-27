@@ -1,7 +1,7 @@
 package com.examen.dev.project.dao;
 
-import com.examen.dev.project.entity.Movimiento;
-import com.examen.dev.project.entity.MovimientoFilter;
+import com.examen.dev.project.entity.Sucursal;
+import com.examen.dev.project.entity.SucursalFilter;
 
 public interface Dao<T, K> {
 
@@ -9,7 +9,7 @@ public interface Dao<T, K> {
 
     ResultPage<T> get(Filter<T> filter, PageOptions pageOpts);
     
-    
+   
 
     long count(Filter<T> filter);
 
@@ -19,7 +19,9 @@ public interface Dao<T, K> {
 
     void delete(K id);
 
-	ResultPage<Movimiento> get(MovimientoFilter filter, PageOptions pageOptions, long idcuenta);
+	ResultPage<Sucursal> get(SucursalFilter filter, PageOptions pageOptions, long idcuenta);
+
+	Sucursal findByLatAndLong(Double latitud, Double longitud);
 
 
 }

@@ -11,10 +11,9 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.examen.dev.project.entity.Cuenta;
-import com.examen.dev.project.entity.CuentaFilter;
-import com.examen.dev.project.entity.Movimiento;
-import com.examen.dev.project.entity.MovimientoFilter;
+import com.examen.dev.project.entity.Sucursal;
+import com.examen.dev.project.entity.SucursalFilter;
+
 
 @SuppressWarnings("unused")
 public class DaoEntityManagerImpl<T, K> implements Dao<T, K> {
@@ -79,19 +78,10 @@ public class DaoEntityManagerImpl<T, K> implements Dao<T, K> {
     @Override
     @Transactional
     public void delete(K id) {
-    	Cuenta obj = this.entityManager.find(Cuenta.class, id);
-    	
-    	String sql = "Select * from Movimiento mov where mov.idCuenta = " +id;
-    	
-    	List movimientos = entityManager.createQuery(sql).getResultList();
-        
-    	if (movimientos != null || movimientos.size()>=1) {
-            throw new RuntimeException("La cuenta tiene movimientos");
-
-    	}
-    	else {
+    	Sucursal obj = this.entityManager.find(Sucursal.class, id);
+    	  	
         this.entityManager.remove(obj);
-    	}
+    	
     }
 
     @Override
@@ -110,19 +100,44 @@ public class DaoEntityManagerImpl<T, K> implements Dao<T, K> {
     }
 
 	@Override
-	public ResultPage<Movimiento> get(MovimientoFilter filter, PageOptions pageOptions, long idcuenta) {
+	public ResultPage<Sucursal> get(SucursalFilter filter, PageOptions pageOptions, long idcuenta) {
     	
-		String sql = "SELECT * FROM MOVIMIENTO  where id_cuenta = " +idcuenta;
+		String sql = "SELECT * FROM SUCURSAL  where id_cuenta = " +idcuenta;
     	
     	List  results = entityManager.createNativeQuery(sql).getResultList();
 		
+    	
 	
 	        long total = pageOptions != null ? this.count((Filter<T>) filter) : results.size();
 	        ResultPage<T> resultPage = new ResultPage<T>();
 	        resultPage.setItems((List<T>) results);
 	        resultPage.setPage(pageOptions);
 	        resultPage.setTotal(total);
-	        return (ResultPage<Movimiento>) resultPage;
+	        return (ResultPage<Sucursal>) resultPage;
+	}
+
+	@Override
+	public Sucursal findByLatAndLong(Double latitud, Double longitud) {
+
+		String sqlString = "SELECT s FROM Sucursal AS s";
+		@SuppressWarnings("unchecked")
+		List<Sucursal> sucursales = (List<Sucursal>) entityManager.createQuery(sqlString);
+		Sucursal sucu= new Sucursal();
+		for (Sucursal suc: sucursales) {
+			if ((latitud == suc.getLatitud()) && (longitud == suc.getLongitud())) {
+				sucu = suc;
+			}
+			else {
+				Double theta = latitud - suc.getLatitud();
+				Double dist = Math.sin(Math.toRadians(latitud)) * Math.sin(Math.toRadians(suc.getLatitud())) + Math.cos(Math.toRadians(latitud)) * Math.cos(Math.toRadians(suc.getLatitud())) * Math.cos(Math.toRadians(theta));
+				dist = Math.acos(dist);
+				dist = Math.toDegrees(dist);
+				dist = dist * 60 * 1.1515;
+				sucu = suc;
+			}
+		}
+		return sucu;
+		
 	}
 
 }

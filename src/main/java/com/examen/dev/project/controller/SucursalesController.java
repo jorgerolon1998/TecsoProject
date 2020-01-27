@@ -18,62 +18,65 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.examen.dev.project.dao.PageOptions;
 import com.examen.dev.project.dao.ResultPage;
-import com.examen.dev.project.entity.Cuenta;
-import com.examen.dev.project.entity.CuentaFilter;
-import com.examen.dev.project.entity.Movimiento;
-import com.examen.dev.project.entity.MovimientoFilter;
-import com.examen.dev.project.service.CuentaService;
+import com.examen.dev.project.entity.Sucursal;
+import com.examen.dev.project.entity.SucursalFilter;
+import com.examen.dev.project.service.SucursalService;
 import com.examen.dev.project.ui.response.BootstrapTableResultPage;
 
 @SuppressWarnings("unused")
 @Controller
-public class CuentasController {
+public class SucursalesController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CuentasController.class);
+    private static final Logger logger = LoggerFactory.getLogger(SucursalesController.class);
 
     @Autowired
-    private CuentaService cuentaService;
+    private SucursalService sucursalService;
 
-    @GetMapping("/cuentas")
+    @GetMapping("/sucursales")
     public ModelAndView getView() {
-        return new ModelAndView("cuentas");
+        return new ModelAndView("sucursales");
     }
 
-    @GetMapping("/api/cuentas")
-    public ResponseEntity<BootstrapTableResultPage<Cuenta>> getCuentas(
+    @GetMapping("/api/sucursales")
+    public ResponseEntity<BootstrapTableResultPage<Sucursal>> getSucursals(
             @ModelAttribute(binding = false) PageOptions pageOptions,
-            @ModelAttribute(binding = false) CuentaFilter filter) {
-        ResultPage<Cuenta> resultPage = cuentaService.getCuenta(filter, pageOptions);
-        BootstrapTableResultPage<Cuenta> uiResult = BootstrapTableResultPage.fromResultPage(resultPage);
+            @ModelAttribute(binding = false) SucursalFilter filter) {
+        ResultPage<Sucursal> resultPage = sucursalService.getSucursal(filter, pageOptions);
+        BootstrapTableResultPage<Sucursal> uiResult = BootstrapTableResultPage.fromResultPage(resultPage);
         return ResponseEntity.ok(uiResult);
     }
     
-
-    @DeleteMapping("/api/cuentas/{id:\\d+}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") Long idCuenta) {
+    @GetMapping("/api/findSucursales")
+    public ResponseEntity<Sucursal> getSucursalbyLatAndLong(Double latitud, Double longitud) {
+        Sucursal sucursal = sucursalService.getSucursalByLatAndLong(latitud, longitud);
+        return ResponseEntity.ok(sucursal);
+    } 
+    
+    @DeleteMapping("/api/sucursales/{id:\\d+}")
+    public ResponseEntity<?> delete(@PathVariable(name = "id") Long idSucursal) {
         logger.debug("delete");
-        cuentaService.delete(idCuenta);
+        sucursalService.delete(idSucursal);
         return ResponseEntity.noContent().build();
 
     }
 
-    @PostMapping("/api/cuentas")
-    public ResponseEntity<?> post(@RequestBody Cuenta cuenta) {
+    @PostMapping("/api/sucursales")
+    public ResponseEntity<?> post(@RequestBody Sucursal sucursal) {
         logger.debug("post");
-        cuentaService.insert(cuenta);
+        sucursalService.insert(sucursal);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/api/cuentas/{id:\\d+}")
-    public ResponseEntity<?> put(@RequestBody Cuenta cuenta) {
+    @PutMapping("/api/sucursales/{id:\\d+}")
+    public ResponseEntity<?> put(@RequestBody Sucursal sucursal) {
         logger.debug("put");
-        cuentaService.update(cuenta);
+        sucursalService.update(sucursal);
         return ResponseEntity.noContent().build();
     }
 
     @ModelAttribute
-    public CuentaFilter getFilter() {
-    	CuentaFilter filter = new CuentaFilter();
+    public SucursalFilter getFilter() {
+    	SucursalFilter filter = new SucursalFilter();
         return filter;
     }
 

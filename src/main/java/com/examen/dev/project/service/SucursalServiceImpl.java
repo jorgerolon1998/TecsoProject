@@ -10,19 +10,19 @@ import org.springframework.stereotype.Service;
 import com.examen.dev.project.dao.Dao;
 import com.examen.dev.project.dao.PageOptions;
 import com.examen.dev.project.dao.ResultPage;
-import com.examen.dev.project.entity.Cuenta;
-import com.examen.dev.project.entity.CuentaFilter;
+import com.examen.dev.project.entity.Sucursal;
+import com.examen.dev.project.entity.SucursalFilter;
 
 @Service
-public class CuentaServiceImpl implements CuentaService {
+public class SucursalServiceImpl implements SucursalService {
 
     @Autowired
-    private Dao<Cuenta, Long> dao;
+    private Dao<Sucursal, Long> dao;
 
-    private static final Logger logger = LoggerFactory.getLogger(CuentaServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SucursalServiceImpl.class);
 
     @Override
-    public ResultPage<Cuenta> getCuenta(CuentaFilter filter, PageOptions pageOptions) {
+    public ResultPage<Sucursal> getSucursal(SucursalFilter filter, PageOptions pageOptions) {
         logger.trace("getCuenta");
         return this.dao.get(filter, pageOptions);
     }
@@ -32,16 +32,16 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     @Transactional
-    public void insert(Cuenta cuenta) {
+    public void insert(Sucursal sucursal) {
         logger.trace("insert");
-        dao.insert(cuenta);
+        dao.insert(sucursal);
     }
 
     @Override
     @Transactional
-    public void update(Cuenta cuenta) {
+    public void update(Sucursal sucursal) {
         logger.trace("update");
-        dao.update(cuenta.getId(), cuenta);
+        dao.update(sucursal.getId(), sucursal);
     }
 
 	@Override
@@ -50,5 +50,12 @@ public class CuentaServiceImpl implements CuentaService {
         dao.delete(id);
 
 		
+	}
+
+
+	@Override
+	public Sucursal getSucursalByLatAndLong(Double latitud, Double longitud) {
+        logger.trace("findByLatAndLong");
+        return dao.findByLatAndLong(latitud, longitud);        
 	}
 }

@@ -5,19 +5,15 @@ import org.springframework.context.annotation.Configuration;
 
 import com.examen.dev.project.dao.Dao;
 import com.examen.dev.project.dao.DaoEntityManagerImpl;
-import com.examen.dev.project.entity.Cuenta;
-import com.examen.dev.project.entity.Movimiento;
+import com.examen.dev.project.entity.Sucursal;
 
 @Configuration
 public class MyConfigDao {
 
     @Bean
-    public Dao<Cuenta, Long> getCuentaDao() {
-        return new DaoEntityManagerImpl<>(Cuenta.class);
+    public Dao<Sucursal, Long> getSucursalDao() {
+        return new DaoEntityManagerImpl<>(Sucursal.class);
     }
     
-    @Bean
-    public Dao<Movimiento, Long> getMovimiento() {
-        return new DaoEntityManagerImpl<>(Movimiento.class);
-    }
+
 }

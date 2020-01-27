@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	<title>Sistema de Gestion Administrativo Contable</title>
+	<title>Sistema de Gestion de Sucursales</title>
 	<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen" />
 	<link th:href="@{/webjars/bootstrap-table/1.12.1/dist/bootstrap-table.min.css}" rel="stylesheet" media="screen" />
 	<link th:href="@{/css/global.css}" rel="stylesheet" media="screen" />
@@ -12,13 +12,13 @@
 	<div class="container">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Cuentas Corrientes</h3>
+				<h3 class="panel-title">Sucursales</h3>
 			</div>
 						<div class="panel-body">
-				<table id="cuentas-table"></table>
-				<div class="cuentas-table-toolbar">
+				<table id="sucursales-table"></table>
+				<div class="sucursales-table-toolbar">
 					<div class="form-inline" role="form">
-						<button id="agregar-nuevo" type="button" class="btn btn-primary">Agregar Cuenta</button>
+						<button id="agregar-nuevo" type="button" class="btn btn-primary">Agregar Sucursal</button>
 					</div>
 				</div>
 				<div id="edicion" style="display:none">
@@ -26,35 +26,34 @@
 					<form class="form-horizontal">
 						<input type="hidden" id="id"/>
 						<div class="form-group">
-							<label for="id" class="col-md-2 control-label">Nro Cuenta</label>
+							<label for="id" class="col-md-2 control-label">Nro de Sucursal</label>
 							<div class="col-md-2">
 								<input type="text" class="form-control" id="id" disabled>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="razonSocial" class="col-md-2 control-label">Razón Social</label>
+							<label for="nombre" class="col-md-2 control-label">Nombre</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" id="razonSocial" placeholder="Razón Social" >
+								<input type="text" class="form-control" id="nombre" placeholder="Nombre" >
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="moneda" class="col-md-2 control-label">Moneda</label>
+							<label for="latitud" class="col-md-2 control-label">Latitud</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" id="moneda" placeholder="Moneda">
+								<input type="text" class="form-control" id="latitud" placeholder="Latitud">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="saldo" class="col-md-2 control-label">Saldo</label>
+							<label for="longitud" class="col-md-2 control-label">Longitud</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" id="saldo" placeholder="Saldo">
+								<input type="text" class="form-control" id="longitud" placeholder="Longitud">
 							</div>
-						</div>																																									
+						</div>																																																
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-4">
 								<button type="button" id="cancelar" class="btn btn-default" style="display:none">Cancelar</button>
 								<button type="button" id="guardar" class="btn btn-primary" style="display:none">Guardar</button>
-								<button type="button" id="movimientos" class="btn btn-primary" style="display:none">Ver Movimiento</button>
 								<button type="button" id="eliminar" class="btn btn-danger" style="display:none">Eliminar</button>
 							</div>
 						</div>
@@ -71,8 +70,8 @@
 
 $(function(){
 	bootbox.setLocale("es");
-	$("table#cuentas-table").bootstrapTable({
-		url: [[@{/api/cuentas}]],
+	$("table#sucursales-table").bootstrapTable({
+		url: [[@{/api/sucursales}]],
 		pagination : true,
 		sidePagination: 'server',
 		pageSize: 5,
@@ -92,26 +91,26 @@ $(function(){
 			},
 			{
 				field: "id",
-				title: "Nro Cuenta"
+				title: "Nro Sucursal"
 			},
 			{
-				field: "razonSocial",
-				title: "Razón Social"
+				field: "nombre",
+				title: "Nombre"
 			},
 			{
-				field: "moneda",
-				title: "Moneda"
+				field: "latitud",
+				title: "Latitud"
 			},
 			{
-				field: "saldo",
-				title: "Saldo"
+				field: "longitud",
+				title: "Longitud"
 			}
 		],
 		buttonsAlign: 'right',
 		toolbarAlign: 'right',
-		toolbar: "div#cuentas-table-toolbar",
-		onCheck: function(cuentas){
-			abrirEdicion(cuentas);
+		toolbar: "div#sucursales-table-toolbar",
+		onCheck: function(sucursales){
+			abrirEdicion(sucursales);
 		},
 		onUncheck: function(){
 			cerrarEdicion();
@@ -120,37 +119,33 @@ $(function(){
 	
 	$("button#agregar-nuevo").click(abrirCreacion);
 	$("button#cancelar").click(cerrarEdicion);
-	$("button#guardar").click(guardarCuenta);
-	$("button#movimientos").click(verMovimientos);
-	$("button#eliminar").click(eliminarCuenta);
+	$("button#guardar").click(guardarSucursal);
+	$("button#eliminar").click(eliminarSucursal);
 
 	function abrirCreacion(){
 		$("button#agregar-nuevo").prop("disabled",true);
 		$("button#cancelar").show();
 		$("button#guardar").show();
 		$("button#eliminar").hide();
-		$("button#movimientos").hide();
 		$("div#edicion").show();
 		$("input#id").val(null);
-		$("input#id").val(null).prop("disabled",true);
-		$("input#razonSocial").val(null).prop("disabled",false);
-		$("input#moneda").val(null).prop("disabled",false);
-		$("input#saldo").val(null).prop("disabled",false);
+		$("input#nombre").val(null).prop("disabled",false);
+		$("input#latitud").val(null).prop("disabled",false);
+		$("input#longitud").val(null).prop("disabled",false);
 
 	}
 	
-	function abrirEdicion(cuentas){
+	function abrirEdicion(sucursales){
 		$("button#agregar-nuevo").prop("disabled",true);
 		$("button#cancelar").show();
 		$("button#guardar").hide();
-		$("button#movimientos").show();
 		$("button#eliminar").show();
 		$("div#edicion").show();
-		$("input#id").val(cuentas.id);
-		$("input#id").val(cuentas.id).prop("disabled",true);
-		$("input#razonSocial").val(cuentas.razonSocial).prop("disabled",true);
-		$("input#moneda").val(cuentas.moneda).prop("disabled",true);
-		$("input#saldo").val(cuentas.saldo).prop("disabled",true);
+		$("input#id").val(sucursales.id);
+		$("input#id").val(sucursales.id).prop("disabled",true);
+		$("input#nombre").val(sucursales.nombre).prop("disabled",true);
+		$("input#latitud").val(sucursales.latitud).prop("disabled",true);
+		$("input#longitud").val(sucursales.longitud).prop("disabled",true);
 
 
 
@@ -159,22 +154,18 @@ $(function(){
 	function cerrarEdicion(){
 		$("div#edicion").hide();
 		$("input#id").val(null);
-		$("input#razonSocial").val(null);
-		$("input#moneda").val(null);
-		$("input#saldo").val(null);
+		$("input#nombre").val(null);
+		$("input#latitud").val(null);
+		$("input#longitud").val(null);
 
 		$("button#agregar-nuevo").prop("disabled",false);
 	}
 	
-	function eliminarCuenta(){
+	function eliminarSucursal(){
 		
 		var id = $("input#id").val();
-		bootbox.confirm({
-			message: "¿Está seguro que desea eliminar al cuentas?",
-			size: "small",
-			callback: function(confirmed){
 				$.ajax({
-					url: [[@{/api/cuentas/}]] + id,
+					url: [[@{/api/sucursales/}]] + id,
 					method: "DELETE",
 					contentType: "application/json; charset=utf-8",
 					dataType: 'json',
@@ -183,50 +174,42 @@ $(function(){
 					cerrarEdicion();
 					refreshTable();
 				}).fail(handleFailure);		
-			}
-		});
+			
+	
 	}
 	
-	function guardarCuenta(){
-		var cuentas = getDatosCuenta();
-		var existente = cuentas.id
-		if ( existente ){
-			actualizarCuentaExistente(cuentas);
-		} else {
-			darDeAltaCuenta(cuentas);
-		}
+	function guardarSucursal(){
+		var sucursales = getDatosSucursal();
+
+		darDeAltaSucursal(sucursales);
+		
 	}
 	
-	function darDeAltaCuenta(cuentas){
-		if (cuentas.moneda == "PESO" || cuentas.moneda == "DOLAR" || cuentas.moneda == "EURO" )
-		{
+	function darDeAltaSucursal(sucursales){
+		
 
 			$.ajax({
-				url: [[@{/api/cuentas/}]],
+				url: [[@{/api/sucursales/}]],
 				method: "POST",
 				dataType: 'json',
 				contentType: "application/json; charset=utf-8",
-				data: JSON.stringify(cuentas)
+				data: JSON.stringify(sucursales)
 			}).done(function(){
 				cerrarEdicion();
 				refreshTable();
 			}).fail(handleFailure);
 	
-		}
-		else {
-			bootbox.alert("El Tipo de Moneda solo puede ser PESO,EURO o DOLAR");
-
-		}	
+		
 	
 	}
 	
-	function actualizarCuentaExistente(cuentas){
+	function actualizarSucursalExistente(sucursales){
 		$.ajax({
-			url: [[@{/api/cuentas/}]] + cuentas.id,
+			url: [[@{/api/sucursales/}]] + sucursales.id,
 			method: "PUT",
 			contentType: "application/json; charset=utf-8",
 			dataType: 'json',
-			data: JSON.stringify(cuentas)
+			data: JSON.stringify(sucursales)
 		}).done(function(){
 			cerrarEdicion();
 			refreshTable();
@@ -234,7 +217,6 @@ $(function(){
 	}
 	
 	function handleFailure(e){
-		var msg = "La cuenta tiene Movimientos y no puede ser eliminada";
 		switch ( e.status ){
 			case 501:
 				msg = "Método sin implementar";
@@ -244,28 +226,22 @@ $(function(){
 	}
 	
 	function refreshTable(){
-		$("table#cuentas-table").bootstrapTable("refresh");
+		$("table#sucursales-table").bootstrapTable("refresh");
 	}
 	
-	function getDatosCuenta(){
+	function getDatosSucursal(){
 		return {
 			
 			id: $("input#id").val(),
-			razonSocial: $("input#razonSocial").val(),
-			moneda: $("input#moneda").val(),
-			saldo: $("input#saldo").val()
+			nombre: $("input#nombre").val(),
+			latitud: $("input#latitud").val(),
+			longitud: $("input#longitud").val()
 
 
 
 		}
 	}
 	
-	function verMovimientos(){
-		var cuentas = getDatosCuenta();
-		
-		window.location.href ="http://localhost:8080/movimientos/" + cuentas.id;
-
-	}
 });
 
 </script>

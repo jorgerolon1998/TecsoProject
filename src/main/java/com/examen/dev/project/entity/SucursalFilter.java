@@ -8,14 +8,13 @@ import javax.persistence.criteria.Root;
 
 import com.examen.dev.project.dao.AbstractFilter;
 
-public class CuentaFilter extends AbstractFilter<Cuenta> {
+public class SucursalFilter extends AbstractFilter<Sucursal> {
 
-    private String razonSocialLike;
+    private String nombre;
 
     @Override
-    protected void populatePredicates(List<Predicate> predicates, Root<Cuenta> root, CriteriaBuilder critBuilder) {
-        if (isEmpty(razonSocialLike)) {
-            // predicates.add()
+    protected void populatePredicates(List<Predicate> predicates, Root<Sucursal> root, CriteriaBuilder critBuilder) {
+        if (isEmpty(nombre)) {
         }
     }
 
